@@ -32,14 +32,18 @@ __prithvi_tab_new() {
     ' 2>/dev/null
   fi
 
-  if [[ -n "$name" ]]; then
-    # Small delay to let the new tab open
-    sleep 0.3
-    __prithvi_set_tab_title "$name"
-    __prithvi_success "New tab: ${PRITHVI_CYAN}$name${PRITHVI_RESET}"
-  else
-    __prithvi_success "New tab opened"
+  # Auto-increment tab counter
+  : ${__prithvi_tab_counter:=0}
+  (( __prithvi_tab_counter++ ))
+
+  if [[ -z "$name" ]]; then
+    name="Untitled Term $__prithvi_tab_counter"
   fi
+
+  # Small delay to let the new tab open
+  sleep 0.3
+  __prithvi_set_tab_title "$name"
+  __prithvi_success "New tab: ${PRITHVI_CYAN}$name${PRITHVI_RESET}"
 }
 
 # ── Tab: split ──────────────────────────────────────────

@@ -6,28 +6,30 @@ class AppState: ObservableObject {
     @Published var selectedTabId: UUID?
 
     private var cancellables = Set<AnyCancellable>()
+    private var tabCounter: Int = 0
 
     init() {
         // Start with one tab
-        let firstTab = TerminalTab(title: "Terminal")
+        let firstTab = TerminalTab(title: nextTabTitle())
         tabs = [firstTab]
         selectedTabId = firstTab.id
 
         setupNotifications()
     }
 
-    private func setupNotifications() {
-        NotificationCenter.default.publisher(for: .newTab)
-            .sink { [weak self] _ in self?.addTab() }
-            .store(in: &cancellables)
+    private func nextTabTitle() -> String {
+        tabCounter += 1
+        return "Untitled Term \(tabCounter)"
+    }
 
+    private func setupNotifications() {
         NotificationCenter.default.publisher(for: .closeTab)
             .sink { [weak self] _ in self?.closeCurrentTab() }
             .store(in: &cancellables)
     }
 
-    func addTab(title: String = "Terminal") {
-        let tab = TerminalTab(title: title)
+    func addTab(title: String? = nil) {
+        let tab = TerminalTab(title: title ?? nextTabTitle())
         tabs.append(tab)
         selectedTabId = tab.id
     }

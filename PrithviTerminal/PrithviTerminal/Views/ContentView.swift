@@ -27,7 +27,7 @@ struct ContentView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .newTab)) { notification in
-            let title = notification.userInfo?["title"] as? String ?? "Terminal"
+            let title = notification.userInfo?["title"] as? String
             appState.addTab(title: title)
         }
         .onChange(of: appState.tabs.count) { newCount in
