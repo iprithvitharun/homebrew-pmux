@@ -51,8 +51,24 @@
 
     /* ── Hero ── */
     .hero {
-      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 64px;
       padding: 40px 0 72px;
+    }
+    .hero-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .hero-image {
+      flex: 1.6;
+      min-width: 0;
+    }
+    .hero-image img {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid #1E1E1E;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 107, 53, 0.06);
     }
     .hero-badge {
       font-family: 'JetBrains Mono', monospace;
@@ -65,18 +81,18 @@
     }
     .hero h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 76px;
+      font-size: 60px;
       font-weight: 700;
-      line-height: 1.02;
+      line-height: 1.05;
       letter-spacing: -0.035em;
       margin-bottom: 24px;
     }
     .hero p {
-      font-size: 18px;
+      font-size: 17px;
       color: #8A8680;
       line-height: 1.6;
       max-width: 460px;
-      margin: 0 auto 40px;
+      margin-bottom: 36px;
     }
 
     /* ── Install box ── */
@@ -90,7 +106,6 @@
       border-radius: 12px;
       padding: 16px 28px;
       max-width: 520px;
-      margin: 0 auto;
       cursor: pointer;
       transition: border-color 0.2s, background 0.2s;
       position: relative;
@@ -241,7 +256,9 @@
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
+      .hero { flex-direction: column; gap: 40px; }
       .hero h1 { font-size: 44px; }
+      .hero-image { order: -1; }
       .bento { grid-template-columns: 1fr; }
       .bento-card.wide, .bento-card.full { grid-column: span 1; }
       .nav-links { display: none; }
@@ -263,14 +280,19 @@
 
     <!-- Hero -->
     <section class="hero" id="install">
-      <div class="hero-badge">v0.1.0 — now on homebrew</div>
-      <h1>Your terminal,<br>but friendly.</h1>
-      <p>Stop memorizing flags. Start typing what you mean. pmux.sh turns your Ghostty terminal into something that actually listens.</p>
+      <div class="hero-content">
+        <div class="hero-badge">v0.1.0 — now on homebrew</div>
+        <h1>Your terminal,<br>but friendly.</h1>
+        <p>Stop memorizing flags. Start typing what you mean. pmux.sh turns your Ghostty terminal into something that actually listens.</p>
 
-      <div class="install-box" onclick="copyInstall(this)">
-        <code><span>$</span> brew install iprithvitharun/pmux/pmux</code>
-        <span class="copy-hint">click to copy</span>
-        <span class="copied-msg">copied!</span>
+        <div class="install-box" onclick="copyInstall(this)">
+          <code><span>$</span> brew install iprithvitharun/pmux/pmux</code>
+          <span class="copy-hint">click to copy</span>
+          <span class="copied-msg">copied!</span>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="hero-terminal.png" alt="pmux.sh running in Ghostty terminal">
       </div>
     </section>
 
