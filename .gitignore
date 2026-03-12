@@ -1,0 +1,9 @@
+# Swift build artifacts
+PrithviTerminal/.build/
+PrithviTerminal/build/
+
+# macOS
+.DS_Store
+
+# Claude
+.claude/
