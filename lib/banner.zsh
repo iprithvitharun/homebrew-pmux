@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Prithvi CLI — Startup banners
+# p.sh — Startup banners
 
 # ── System info helpers ──────────────────────────────────────
 __prithvi_greeting() {
@@ -75,11 +75,11 @@ __prithvi_banner_full() {
   local git_user=$(gh auth status 2>&1 | grep -B1 "Active account: true" | head -1 | grep -o 'account [^ ]*' | cut -d' ' -f2)
 
   print ""
-  print "    ${c1}░░${c2}▒▒${c3}▓▓${b}${c4}██████████████████████████████${r}${c3}▓▓${c2}▒▒${c1}░░${r}"
-  print "    ${c2}▒▒${c3}▓▓${c4}██${r}  ${b}${c1}P ${c2}R ${c3}I ${c4}T ${c1}H ${c2}V ${c3}I${r}  ${c4}██${c3}▓▓${c2}▒▒${r}"
-  print "    ${c1}░░${c2}▒▒${c3}▓▓${b}${c4}██████████████████████████████${r}${c3}▓▓${c2}▒▒${c1}░░${r}"
+  print "    ${c1}░░${c2}▒▒${c3}▓▓${b}${c4}████████████████████████${r}${c3}▓▓${c2}▒▒${c1}░░${r}"
+  print "    ${c2}▒▒${c3}▓▓${c4}██${r}  ${b}${c1}p ${c2}. ${c3}s ${c4}h${r}  ${c4}██${c3}▓▓${c2}▒▒${r}"
+  print "    ${c1}░░${c2}▒▒${c3}▓▓${b}${c4}████████████████████████${r}${c3}▓▓${c2}▒▒${c1}░░${r}"
   print ""
-  print "    ${b}${c1}${greeting}, Prithvi${r}  ${d}v0.1.0${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}}"
+  print "    ${b}${c1}${greeting}${r}  ${d}p.sh v0.1.0${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}}"
   print ""
 }
 
@@ -100,7 +100,7 @@ __prithvi_banner_compact() {
   local git_user=$(gh auth status 2>&1 | grep -B1 "Active account: true" | head -1 | grep -o 'account [^ ]*' | cut -d' ' -f2)
 
   print ""
-  print "    ${c1}▓${c3}▒${c4}░${r} ${b}${c1}Prithvi${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}} ${c4}░${c3}▒${c1}▓${r}"
+  print "    ${c1}▓${c3}▒${c4}░${r} ${b}${c1}p.sh${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}} ${c4}░${c3}▒${c1}▓${r}"
   print ""
 }
 

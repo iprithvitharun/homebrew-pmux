@@ -8,6 +8,7 @@ PRITHVI_DIR="${0:A:h}"
 # ── Source all modules ──────────────────────────────────
 source "$PRITHVI_DIR/lib/colors.zsh"
 source "$PRITHVI_DIR/lib/banner.zsh"
+source "$PRITHVI_DIR/lib/picker.zsh"
 source "$PRITHVI_DIR/lib/prompt.zsh"
 source "$PRITHVI_DIR/commands/filesystem.zsh"
 source "$PRITHVI_DIR/commands/git.zsh"

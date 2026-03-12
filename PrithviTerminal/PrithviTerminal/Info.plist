@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Prithvi Terminal</string>
+    <string>p.sh</string>
     <key>CFBundleDisplayName</key>
-    <string>Prithvi Terminal</string>
+    <string>p.sh</string>
     <key>CFBundleIdentifier</key>
-    <string>com.prithvi.terminal</string>
+    <string>com.prithvi.psh</string>
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>CFBundleShortVersionString</key>

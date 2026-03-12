@@ -1,16 +1,16 @@
 #!/bin/bash
-# Build Prithvi Terminal as a macOS .app bundle
+# Build p.sh as a macOS .app bundle
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BUILD_DIR="$SCRIPT_DIR/.build/release"
-APP_DIR="$SCRIPT_DIR/build/Prithvi Terminal.app"
+APP_DIR="$SCRIPT_DIR/build/p.sh.app"
 CONTENTS="$APP_DIR/Contents"
 MACOS="$CONTENTS/MacOS"
 RESOURCES="$CONTENTS/Resources"
 
 echo ""
-echo "  Building Prithvi Terminal..."
+echo "  Building p.sh..."
 echo ""
 
 # Build release binary
@@ -35,9 +35,8 @@ cp "$SCRIPT_DIR/PrithviTerminal/Info.plist" "$CONTENTS/Info.plist"
 # Create PkgInfo
 echo -n "APPL????" > "$CONTENTS/PkgInfo"
 
-# Create a simple icon (placeholder — replace with actual .icns)
-# For now, just touch it so the bundle is valid
-# To add a real icon: replace Resources/AppIcon.icns
+# Copy app icon
+cp "$SCRIPT_DIR/PrithviTerminal/AppIcon.icns" "$RESOURCES/AppIcon.icns"
 
 echo ""
 echo "  ✓ Built: $APP_DIR"
