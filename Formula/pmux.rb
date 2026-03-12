@@ -2,7 +2,7 @@ class Pmux < Formula
   desc "Human-friendly shell commands for Ghostty terminal"
   homepage "https://github.com/iprithvitharun/homebrew-pmux"
   url "https://github.com/iprithvitharun/homebrew-pmux/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "PLACEHOLDER"
+  sha256 "3c5ae79f89ae2a7f140d5e6f0699cfb708dfd36b7f9ba09b69d2d5c894bdca3c"
   license "MIT"
 
   def install
