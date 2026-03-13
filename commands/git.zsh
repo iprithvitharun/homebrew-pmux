@@ -37,7 +37,7 @@ __pmux_git_save() {
 
   __pmux_ask "Commit message?"
   local msg
-  read msg
+  read -r msg
 
   if [[ -z "$msg" ]]; then
     __pmux_error "Commit message cannot be empty"

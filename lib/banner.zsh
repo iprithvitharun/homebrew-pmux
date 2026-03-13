@@ -32,38 +32,12 @@ __pmux_uptime_short() {
 }
 
 __pmux_next_event() {
+  # Find the compiled calendar helper in lib/
+  local helper="${PMUX_DIR:-${0:A:h}}/lib/pmux-cal-helper"
+  [[ -x "$helper" ]] || return
+
   local evt
-  # Run osascript in background with 3s timeout so it can't block startup
-  evt=$(
-    osascript -e '
-tell application "Calendar"
-    set now to current date
-    set endOfDay to now + (24 * 60 * 60 - (hours of now * 3600 + minutes of now * 60 + seconds of now))
-    set bestDate to endOfDay + 1
-    set bestSummary to ""
-    repeat with cal in calendars
-        set evts to (every event of cal whose start date ≥ now and start date ≤ endOfDay)
-        repeat with evt in evts
-            if start date of evt < bestDate then
-                set bestDate to start date of evt
-                set bestSummary to summary of evt
-                set h to text -2 thru -1 of ("0" & (hours of bestDate as string))
-                set m to text -2 thru -1 of ("0" & (minutes of bestDate as string))
-            end if
-        end repeat
-    end repeat
-    if bestSummary is not "" then
-        return bestSummary & " @ " & h & ":" & m
-    end if
-    return ""
-end tell
-' 2>/dev/null &
-    local pid=$!
-    { sleep 3; kill $pid 2>/dev/null; } &
-    local watchdog=$!
-    wait $pid 2>/dev/null
-    kill $watchdog 2>/dev/null
-  )
+  evt=$("$helper" 2>/dev/null)
   if [[ -n "$evt" ]]; then
     # Truncate long event names: "Long Event Name @ 14:30" → "Long Event Na… @ 14:30"
     local time_part="${evt##* @ }"
@@ -126,8 +100,7 @@ __pmux_banner_full() {
   print "    ${c2}▒▒${c3}▓▓${c4}██${r}  ${b}${c1}p ${c2}m ${c3}u ${c4}x ${c1}. ${c2}s ${c3}h${r}  ${c4}██${c3}▓▓${c2}▒▒${r}"
   print "    ${c1}░░${c2}▒▒${c3}▓▓${b}${c4}████████████████████████${r}${c3}▓▓${c2}▒▒${c1}░░${r}"
   print ""
-  print "    ${b}${c1}${greeting}${r}  ${d}pmux.sh v0.1.0${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}}"
-  [[ -n "$cal_event" ]] && print "    ${co}📅 ${cal_event}${r}"
+  print "    ${b}${c1}${greeting}${r}  ${d}pmux.sh v0.1.0${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}}${cal_event:+  ${co}📅 ${cal_event}${r}}"
   print ""
 }
 
