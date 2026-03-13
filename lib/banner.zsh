@@ -31,6 +31,42 @@ __pmux_uptime_short() {
   fi
 }
 
+__pmux_next_event() {
+  local evt
+  evt=$(osascript -e '
+tell application "Calendar"
+    set now to current date
+    set endOfDay to now + (24 * 60 * 60 - (hours of now * 3600 + minutes of now * 60 + seconds of now))
+    set bestDate to endOfDay + 1
+    set bestSummary to ""
+    repeat with cal in calendars
+        set evts to (every event of cal whose start date ≥ now and start date ≤ endOfDay)
+        repeat with evt in evts
+            if start date of evt < bestDate then
+                set bestDate to start date of evt
+                set bestSummary to summary of evt
+                set h to text -2 thru -1 of ("0" & (hours of bestDate as string))
+                set m to text -2 thru -1 of ("0" & (minutes of bestDate as string))
+            end if
+        end repeat
+    end repeat
+    if bestSummary is not "" then
+        return bestSummary & " @ " & h & ":" & m
+    end if
+    return ""
+end tell
+' 2>/dev/null)
+  if [[ -n "$evt" ]]; then
+    # Truncate long event names: "Long Event Name @ 14:30" → "Long Event Na… @ 14:30"
+    local time_part="${evt##* @ }"
+    local name_part="${evt% @ *}"
+    if (( ${#name_part} > 25 )); then
+      name_part="${name_part:0:24}…"
+    fi
+    print -n "${name_part} @ ${time_part}"
+  fi
+}
+
 __pmux_memory_short() {
   local mem_total
   mem_total=$(sysctl -n hw.memsize 2>/dev/null)
@@ -73,6 +109,9 @@ __pmux_banner_full() {
   local uptime=$(__pmux_uptime_short)
   local memory=$(__pmux_memory_short)
   local git_user=$(gh auth status 2>&1 | grep -B1 "Active account: true" | head -1 | grep -o 'account [^ ]*' | cut -d' ' -f2)
+  local cal_event=$(__pmux_next_event)
+
+  local co=$'\033[38;5;216m'  # orange for calendar
 
   print ""
   print "    ${c1}░░${c2}▒▒${c3}▓▓${b}${c4}████████████████████████${r}${c3}▓▓${c2}▒▒${c1}░░${r}"
@@ -80,6 +119,7 @@ __pmux_banner_full() {
   print "    ${c1}░░${c2}▒▒${c3}▓▓${b}${c4}████████████████████████${r}${c3}▓▓${c2}▒▒${c1}░░${r}"
   print ""
   print "    ${b}${c1}${greeting}${r}  ${d}pmux.sh v0.1.0${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}}"
+  [[ -n "$cal_event" ]] && print "    ${co}📅 ${cal_event}${r}"
   print ""
 }
 
@@ -98,9 +138,12 @@ __pmux_banner_compact() {
   local uptime=$(__pmux_uptime_short)
   local memory=$(__pmux_memory_short)
   local git_user=$(gh auth status 2>&1 | grep -B1 "Active account: true" | head -1 | grep -o 'account [^ ]*' | cut -d' ' -f2)
+  local cal_event=$(__pmux_next_event)
+
+  local co=$'\033[38;5;216m'  # orange for calendar
 
   print ""
-  print "    ${c1}▓${c3}▒${c4}░${r} ${b}${c1}pmux.sh${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}} ${c4}░${c3}▒${c1}▓${r}"
+  print "    ${c1}▓${c3}▒${c4}░${r} ${b}${c1}pmux.sh${r}  ${c2}⏱${r} ${c3}${uptime}${r}  ${c2}⬡${r} ${cy}${memory}${r}${git_user:+  ${cg}⌘${r} ${cg}${git_user}${r}}${cal_event:+  ${co}📅 ${cal_event}${r}} ${c4}░${c3}▒${c1}▓${r}"
   print ""
 }
 
